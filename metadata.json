@@ -1,6 +1,0 @@
-{
-  "name": "Nirvul - Bengali AI Corrector",
-  "description": "An AI-powered web application to correct spelling, grammar, and sentence structure in Bengali text. It provides a side-by-side comparison of the original and corrected text, highlighting the changes.",
-  "requestFramePermissions": [],
-  "prompt": ""
-}

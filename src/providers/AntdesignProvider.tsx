@@ -1,4 +1,5 @@
 'use client'
+import "@ant-design/v5-patch-for-react-19";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider, message } from "antd";
 import React, { useEffect } from "react";

@@ -1,0 +1,136 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Menu, X, ShoppingCart } from "lucide-react";
+import { Button } from "antd";
+
+const HeaderMain = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const cartItemCount = 3; // replace with real data / prop
+
+  const navItems = [
+    // { name: "Home", path: "/" },
+    // { name: "Products", path: "/products" },
+    // { name: "Contact Us", path: "/contact" },
+  ];
+
+  return (
+    <>
+      <header
+        aria-describedby="thinkshop-header"
+        className="shadow-xs sticky left-0 top-0 z-50 w-full bg-white py-3.5"
+      >
+        <div className="container relative">
+          <nav className="flex items-center justify-between gap-7">
+            {/* Logo */}
+            <div className="flex shrink-0 items-center">
+              <div className="relative border-r border-gray-300 pr-7">
+                <Link
+                  href="/"
+                  className="flex w-50 items-center"
+                  aria-label="Thinkshop home"
+                >
+                  <div>
+                    <h1 className="text-xl md:text-3xl font-bold text-nirvul-primary-800">
+                      নিরভুল (Nirvul)
+                    </h1>
+                    <p className="text-nirvul-gray-500 text-sm md:text-base">
+                      আপনার বাংলা লেখার AI সহযোগী
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Desktop Nav */}
+            <ul className="hidden flex-1 items-center justify-center gap-x-9 md:flex">
+              {navItems.map((item, index) => (
+                <li key={index} className="group/nav-item flex items-center">
+                  <Link
+                    href={item.path}
+                    className="text-primary-900 flex items-center gap-x-2.5 text-sm font-medium"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Actions (Login / Register / Cart) */}
+            <div className="flex items-center gap-4">
+              {/* Desktop Buttons */}
+              <div className="hidden md:flex items-center gap-3">
+                <Button type="default" size="middle">
+                  <Link href="/login" className="flex items-center">
+                    Log In
+                  </Link>
+                </Button>
+                <Button type="primary" size="middle">
+                  <Link href="/register" className="flex items-center">
+                    Register
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Mobile menu toggle */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 md:hidden"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <X size={24} className="text-gray-600" />
+                ) : (
+                  <Menu className="text-gray-600" size={24} />
+                )}
+              </button>
+            </div>
+          </nav>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-0 bg-white px-4 py-5 shadow-md transition-all duration-300 md:hidden">
+              <ul className="flex flex-col gap-y-4">
+                {navItems.map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      href={item.path}
+                      className="block text-sm font-medium text-gray-950"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+
+                <li className="flex flex-col gap-2 pt-2 border-t border-gray-200">
+                  <div className="flex gap-2">
+                    <Button type="default" block>
+                      <Link
+                        href="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Log In
+                      </Link>
+                    </Button>
+                    <Button type="primary" block>
+                      <Link
+                        href="/register"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Register
+                      </Link>
+                    </Button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      </header>
+    </>
+  );
+};
+
+export default HeaderMain;

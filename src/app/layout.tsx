@@ -1,9 +1,5 @@
-"use client";
-
 import React from "react";
-
 import "@/styles/global.css";
-
 import AntdesignProvider from "@/providers/AntdesignProvider";
 import TanstackProvider from "@/providers/TanstackProvider";
 import HeaderMain from "@/components/HeaderMain";

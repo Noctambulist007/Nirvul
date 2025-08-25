@@ -7,18 +7,11 @@ import { Button } from "antd";
 
 const HeaderMain = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const cartItemCount = 3; // replace with real data / prop
-
-  const navItems = [
-    // { name: "Home", path: "/" },
-    // { name: "Products", path: "/products" },
-    // { name: "Contact Us", path: "/contact" },
-  ];
 
   return (
     <>
       <header
-        aria-describedby="thinkshop-header"
+        aria-describedby="Nirvul-header"
         className="shadow-xs sticky left-0 top-0 z-50 w-full bg-white py-3.5"
       >
         <div className="container relative">
@@ -29,7 +22,7 @@ const HeaderMain = () => {
                 <Link
                   href="/"
                   className="flex w-50 items-center"
-                  aria-label="Thinkshop home"
+                  aria-label="Nirvul home"
                 >
                   <div>
                     <h1 className="text-xl md:text-3xl font-bold text-nirvul-primary-800">
@@ -43,21 +36,7 @@ const HeaderMain = () => {
               </div>
             </div>
 
-            {/* Desktop Nav */}
-            <ul className="hidden flex-1 items-center justify-center gap-x-9 md:flex">
-              {navItems.map((item, index) => (
-                <li key={index} className="group/nav-item flex items-center">
-                  <Link
-                    href={item.path}
-                    className="text-primary-900 flex items-center gap-x-2.5 text-sm font-medium"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Actions (Login / Register / Cart) */}
+            {/* Actions (Login / Register) */}
             <div className="flex items-center gap-4">
               {/* Desktop Buttons */}
               <div className="hidden md:flex items-center gap-3">
@@ -92,18 +71,6 @@ const HeaderMain = () => {
           {mobileMenuOpen && (
             <div className="absolute left-0 right-0 top-full z-50 mt-0 bg-white px-4 py-5 shadow-md transition-all duration-300 md:hidden">
               <ul className="flex flex-col gap-y-4">
-                {navItems.map((item, index) => (
-                  <li key={index}>
-                    <Link
-                      href={item.path}
-                      className="block text-sm font-medium text-gray-950"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-
                 <li className="flex flex-col gap-2 pt-2 border-t border-gray-200">
                   <div className="flex gap-2">
                     <Button type="default" block>

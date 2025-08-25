@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Form, message } from "antd"
-import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/supabase";
 
 const useAuth = () => {
   const [form] = Form.useForm();

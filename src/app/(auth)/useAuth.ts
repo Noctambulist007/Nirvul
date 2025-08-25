@@ -2,11 +2,13 @@ import { useState } from "react"
 import { Form, message } from "antd"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useAuth = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleLogin = async (values: any) => {
     setLoading(true);
@@ -34,15 +36,20 @@ const useAuth = () => {
     }
   };
 
-  // const handleLogout = async () => {
-  //   setLoading(true);
-  //   const res = await clientApi("/auth/logout");
-  //   setLoading(false);
-  //   if (res) {
-  //     router.push("/login");
-  //     message.success('Logged out successfully');
-  //   }
-  // };
+  const handleLogout = async () => {
+    setLoading(true);
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signOut();
+    setLoading(false);
+    if (!error) {
+      message.success('Logged out successfully');
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+
+      router.push('/login');
+    } else {
+      message.error(error.message);
+    }
+  };
 
 
   return {
@@ -51,7 +58,7 @@ const useAuth = () => {
     setLoading,
     handleLogin,
     handleRegister,
-    // handleLogout
+    handleLogout
   };
 };
 export default useAuth;

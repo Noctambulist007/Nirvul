@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { message } from "antd";
 
 export const useHistory = () => {
   const queryClient = useQueryClient();

@@ -38,7 +38,7 @@ const useAuth = () => {
     setLoading(false);
     if (!error) {
       message.success('Account created successfully');
-      router.push('/login');
+      router.push('/');
     } else {
       message.error(error.message);
     }

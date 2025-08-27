@@ -1,6 +1,7 @@
 import { Button, Select } from "antd";
 import React, { useState } from "react";
 import { CheckCircle, FileText, Languages } from "lucide-react";
+import { LoadingAction, WritingStyle } from "@/app/page";
 
 const { Option } = Select;
 
@@ -8,15 +9,27 @@ interface InputPanelProps {
   inputText: string;
   setInputText: (text: string) => void;
   isLoading: boolean;
+  onCorrect: () => void;
+  onTranslate: () => void;
+  onSummarize: () => void;
+  loadingAction: LoadingAction;
+  writingStyle: WritingStyle;
+  setWritingStyle: (style: WritingStyle) => void;
+  hasInput: boolean;
 }
 
 export const InputPanel: React.FC<InputPanelProps> = ({
   inputText,
   setInputText,
   isLoading,
+  onCorrect,
+  onTranslate,
+  onSummarize,
+  loadingAction,
+  writingStyle,
+  setWritingStyle,
+  hasInput,
 }) => {
-  const [writingStyle, setWritingStyle] = useState<string>("standard");
-
   const charCount = inputText.length;
   const wordCount =
     inputText.trim() === "" ? 0 : inputText.trim().split(/\s+/).length;
@@ -68,6 +81,9 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               type="primary"
               icon={<CheckCircle className="w-5 h-5 text-green-600" />}
               className="flex items-center gap-1 px-3 py-1 rounded-md"
+              onClick={onCorrect}
+              loading={isLoading && loadingAction === "correct"}
+              disabled={isLoading || !hasInput}
             >
               শুদ্ধ করুন
             </Button>
@@ -76,6 +92,9 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               type="primary"
               icon={<Languages className="w-5 h-5 text-blue-600" />}
               className="flex items-center gap-1 px-3 py-1 rounded-md"
+              onClick={onTranslate}
+              loading={isLoading && loadingAction === "translate"}
+              disabled={isLoading || !hasInput}
             >
               অনুবাদ
             </Button>
@@ -84,6 +103,9 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               type="primary"
               icon={<FileText className="w-5 h-5 text-purple-600" />}
               className="flex items-center gap-1 px-3 py-1 rounded-md"
+              onClick={onSummarize}
+              loading={isLoading && loadingAction === "summarize"}
+              disabled={isLoading || !hasInput}
             >
               সারসংক্ষেপ
             </Button>

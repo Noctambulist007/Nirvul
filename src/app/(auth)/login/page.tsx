@@ -2,7 +2,7 @@
 import { Form, Input, Button, Typography } from "antd";
 import Link from "next/link";
 import Image from "next/image";
-import useAuth from "../useAuth";
+import useAuth from "../../../hooks/useAuth";
 const { Title, Text } = Typography;
 
 export default function Login() {

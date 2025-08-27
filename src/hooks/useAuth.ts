@@ -26,7 +26,15 @@ const useAuth = () => {
   const handleRegister = async (values: any) => {
     setLoading(true);
     const supabase = await createClient();
-    const { error } = await supabase.auth.signUp(values)
+    const { error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+      options: {
+        data: {
+          name: values.fullName,
+        }
+      }
+    })
     setLoading(false);
     if (!error) {
       message.success('Account created successfully');

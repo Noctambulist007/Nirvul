@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button, Spin } from "antd";
 import { useUser } from "@/hooks/useUser";
-import useAuth from "@/app/(auth)/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { LogoutOutlined, LoginOutlined, UserAddOutlined } from "@ant-design/icons";
 
 const HeaderMain = () => {

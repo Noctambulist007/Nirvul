@@ -15,7 +15,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col border border-gray-200/50 h-full">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">আপনার লেখাটি এখানে দিন</h2>
+      <h2 className="text-xl font-semibold mb-4 text-nirvul-gray-800">আপনার লেখাটি এখানে দিন</h2>
       
       <div className="relative flex-grow flex flex-col min-h-0">
         <textarea
@@ -27,7 +27,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
           aria-label="Bengali text input"
           maxLength={10000}
         />
-        <div className="text-right text-sm text-gray-500 mt-2 pr-1">
+        <div className="text-right text-sm text-nirvul-gray-500 mt-2 pr-1">
           <span>{wordCount} শব্দ</span> / <span>{charCount} অক্ষর</span>
         </div>
       </div>

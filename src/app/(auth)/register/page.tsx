@@ -26,7 +26,7 @@ export default function Signup() {
 
         {/* Title */}
         <div className="text-center mb-6">
-          <Title level={3} className="!text-gray-900 !mb-2">
+          <Title level={3} className="!text-nirvul-gray-900 !mb-2">
             Create your account
           </Title>
           <Text type="secondary" className="!text-base">
@@ -101,7 +101,7 @@ export default function Signup() {
 
         {/* Already have account */}
         <div className="text-center mt-6">
-          <Text className="text-sm text-gray-500">
+          <Text className="text-sm text-nirvul-gray-500">
             Already have an account?{" "}
             <Link
               href="/login"

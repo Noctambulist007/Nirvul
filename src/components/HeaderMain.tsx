@@ -146,11 +146,11 @@ const HeaderMain = () => {
                       {user.name ? getUserInitials(user.name) : null}
                     </Avatar>
                     <div className="hidden lg:block">
-                      <p className="text-sm font-medium text-gray-900 truncate max-w-32">
+                      <p className="text-sm font-medium text-nirvul-gray-900 truncate max-w-32">
                         {user.name || "User"}
                       </p>
                       {user.email && (
-                        <p className="text-xs text-gray-500 truncate max-w-32">
+                        <p className="text-xs text-nirvul-gray-500 truncate max-w-32">
                           {user.email}
                         </p>
                       )}
@@ -206,9 +206,9 @@ const HeaderMain = () => {
               aria-controls="mobile-menu"
             >
               {mobileMenuOpen ? (
-                <X size={24} className="text-gray-600" />
+                <X size={24} className="text-nirvul-gray-600" />
               ) : (
-                <Menu className="text-gray-600" size={24} />
+                <Menu className="text-nirvul-gray-600" size={24} />
               )}
             </button>
           </div>
@@ -235,11 +235,11 @@ const HeaderMain = () => {
                     {user.name ? getUserInitials(user.name) : null}
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-medium text-gray-900 truncate">
+                    <p className="text-base font-medium text-nirvul-gray-900 truncate">
                       {user.name || "User"}
                     </p>
                     {user.email && (
-                      <p className="text-sm text-gray-500 truncate">
+                      <p className="text-sm text-nirvul-gray-500 truncate">
                         {user.email}
                       </p>
                     )}

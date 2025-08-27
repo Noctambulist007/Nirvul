@@ -8,10 +8,10 @@ const NotFoundPage = () => {
         <div
           aria-describedby="content-wrapper"
           className="flex h-screen flex-col items-center justify-center gap-10 bg-white">
-          <h1 className="text-5xl font-semibold text-gray-800">
+          <h1 className="text-5xl font-semibold text-nirvul-gray-800">
             This page could not be found.
           </h1>
-          <p className="text-lg font-medium text-gray-700">
+          <p className="text-lg font-medium text-nirvul-gray-700">
             Sorry we could&apos;t find what you were looking for.
           </p>
 

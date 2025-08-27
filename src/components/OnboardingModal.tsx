@@ -22,7 +22,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => 
       >
         <button 
           onClick={onClose} 
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-4 right-4 text-nirvul-gray-400 hover:text-nirvul-gray-600 transition-colors"
           aria-label="Close tutorial"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,28 +31,28 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => 
         </button>
 
         <div className="text-center">
-            <h2 className="text-2xl font-bold text-rose-800 mb-2">নিরভুল-এ স্বাগতম!</h2>
-            <p className="text-gray-600 mb-6">আপনার বাংলা লেখার নতুন AI সহযোগী।</p>
+            <h2 className="text-2xl font-bold text-nirvul-primary-800 mb-2">নিরভুল-এ স্বাগতম!</h2>
+            <p className="text-nirvul-gray-600 mb-6">আপনার বাংলা লেখার নতুন AI সহযোগী।</p>
         </div>
         
         <div className="space-y-4 text-left">
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-rose-100 text-rose-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">১</div>
-                <p className="text-gray-700">বাম দিকের প্যানেল থেকে কোনো কাজ বেছে নিন (যেমন <span className="font-semibold">'শুদ্ধ করুন'</span>) এবং ইনপুট বাক্সে আপনার লেখাটি দিন।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">১</div>
+                <p className="text-nirvul-gray-700">বাম দিকের প্যানেল থেকে কোনো কাজ বেছে নিন (যেমন <span className="font-semibold">'শুদ্ধ করুন'</span>) এবং ইনপুট বাক্সে আপনার লেখাটি দিন।</p>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-rose-100 text-rose-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">২</div>
-                <p className="text-gray-700">আউটপুট প্যানেলে আপনার ফলাফল দেখুন। সংশোধনের ক্ষেত্রে, পরিবর্তনগুলো <span className="bg-green-100 text-green-800 px-1 rounded">সবুজ</span> এবং <span className="bg-red-100 text-red-800 px-1 rounded line-through">লাল</span> রঙে হাইলাইট করা হবে।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">২</div>
+                <p className="text-nirvul-gray-700">আউটপুট প্যানেলে আপনার ফলাফল দেখুন। সংশোধনের ক্ষেত্রে, পরিবর্তনগুলো <span className="bg-green-100 text-green-800 px-1 rounded">সবুজ</span> এবং <span className="bg-red-100 text-red-800 px-1 rounded line-through">লাল</span> রঙে হাইলাইট করা হবে।</p>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-rose-100 text-rose-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">৩</div>
-                <p className="text-gray-700">ডানদিকের নতুন <span className="font-semibold">'সংশোধন'</span> প্যানেলে সমস্ত ভুলের তালিকা দেখুন এবং প্রয়োজনে আউটপুট সম্পাদনা করুন, কপি করুন বা ডাউনলোড করুন।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">৩</div>
+                <p className="text-nirvul-gray-700">ডানদিকের নতুন <span className="font-semibold">'সংশোধন'</span> প্যানেলে সমস্ত ভুলের তালিকা দেখুন এবং প্রয়োজনে আউটপুট সম্পাদনা করুন, কপি করুন বা ডাউনলোড করুন।</p>
             </div>
         </div>
 
         <button 
           onClick={onClose} 
-          className="mt-8 w-full bg-rose-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-rose-800 transition-colors duration-300"
+          className="mt-8 w-full bg-nirvul-primary-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-nirvul-primary-800 transition-colors duration-300"
         >
           শুরু করুন
         </button>

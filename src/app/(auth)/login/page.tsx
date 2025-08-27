@@ -25,7 +25,7 @@ export default function Login() {
 
         {/* Title */}
         <div className="text-center mb-6">
-          <Title level={3} className="!text-gray-900 !mb-2">
+          <Title level={3} className="!text-nirvul-gray-900 !mb-2">
             Welcome back
           </Title>
           <Text type="secondary" className="!text-base">
@@ -64,7 +64,7 @@ export default function Login() {
           </Form.Item>
 
           <div className="flex justify-between items-center text-sm mb-4">
-            <span className="text-gray-500">Don't have an account?</span>
+            <span className="text-nirvul-gray-500">Don't have an account?</span>
             <Link
               href="/register"
               className="text-nirvul-primary-500 hover:underline font-medium"

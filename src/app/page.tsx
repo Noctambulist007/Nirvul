@@ -195,9 +195,6 @@ export default function Home() {
           )}
         </AnimatePresence>
       </div>
-      <footer className="text-center p-4 text-slate-500 text-sm">
-        <p>Powered by Google Gemini</p>
-      </footer>
     </div>
   );
 }

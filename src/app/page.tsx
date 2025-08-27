@@ -1,102 +1,202 @@
-import Image from "next/image";
+'use client'
+import React, { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { OnboardingModal } from '@/components/OnboardingModal';
+import { InputPanel } from '@/components/InputPanel';
+import { OutputPanel } from '@/components/OutputPanel';
+import { CorrectionsPanel } from '@/components/CorrectionsPanel';
+import { correctBengaliTextStream, summarizeBengaliText, translateBengaliToEnglish } from '@/services/gemini';
+import { Correction, DiffResult } from '@/types';
+import { diffWords } from '@/utils/diff';
+import { Sidebar } from '@/components/Sidebar';
+export type WritingStyle = 'standard' | 'formal' | 'creative';
+export type LoadingAction = 'correct' | 'translate' | 'summarize' | null;
+export type HighlightedCorrection = { start: number; end: number } | null;
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [inputText, setInputText] = useState<string>('');
+  const [originalText, setOriginalText] = useState<string | null>(null);
+  const [outputText, setOutputText] = useState<string>('');
+  const [diffResult, setDiffResult] = useState<DiffResult[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingAction, setLoadingAction] = useState<LoadingAction>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [writingStyle, setWritingStyle] = useState<WritingStyle>('standard');
+  const [outputTitle, setOutputTitle] = useState<string>('আপনার ফলাফল');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [highlightedCorrection, setHighlightedCorrection] = useState<HighlightedCorrection>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    const isFirstVisit = !localStorage.getItem('nirvul-visited');
+    if (isFirstVisit) {
+      setShowModal(true);
+      localStorage.setItem('nirvul-visited', 'true');
+    }
+    
+    const handleResize = () => {
+      if (window.innerWidth < 1280) { // Adjusted breakpoint for 3 columns
+        setIsSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  const performBlockingAction = async (action: () => Promise<string>, actionType: LoadingAction, title: string) => {
+    if (!inputText.trim()) {
+      setError('Please enter some text in the input panel first.');
+      setOutputText('');
+      setOutputTitle('ত্রুটি');
+      setDiffResult(null);
+      setOriginalText(null);
+      return;
+    }
+    setIsLoading(true);
+    setLoadingAction(actionType);
+    setError(null);
+    setOutputText('');
+    setOutputTitle(title);
+    setDiffResult(null);
+    setOriginalText(null);
+
+    try {
+      const result = await action();
+      setOutputText(result);
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred. Please check the console and try again.');
+    } finally {
+      setIsLoading(false);
+      setLoadingAction(null);
+    }
+  };
+  
+  const handleCorrection = useCallback(async () => {
+    if (!inputText.trim()) {
+      setError('Please enter some text in the input panel first.');
+      setOutputText('');
+      setOutputTitle('ত্রুটি');
+      setDiffResult(null);
+      return;
+    }
+
+    setIsLoading(true);
+    setLoadingAction('correct');
+    setError(null);
+    setOutputText('');
+    setDiffResult(null);
+    setOriginalText(inputText);
+    setOutputTitle('সংশোধিত লেখা');
+
+    try {
+      const stream = await correctBengaliTextStream(inputText, writingStyle);
+      let finalResult = '';
+      for await (const chunk of stream) {
+        finalResult += chunk.text;
+        setOutputText(finalResult);
+      }
+      // After stream is complete, calculate the diff
+      setDiffResult(diffWords(inputText, finalResult));
+    } catch (err) {
+      console.error("Error during streaming correction:", err);
+      setError('An error occurred during the correction. Please try again.');
+      setOutputText(''); // Clear partial text on error
+    } finally {
+      setIsLoading(false);
+      setLoadingAction(null);
+    }
+  }, [inputText, writingStyle]);
+  
+  const handleTranslate = useCallback(() => {
+    performBlockingAction(
+      () => translateBengaliToEnglish(inputText),
+      'translate',
+      'English Translation'
+    );
+  }, [inputText]);
+  
+  const handleSummarize = useCallback(() => {
+    performBlockingAction(
+      () => summarizeBengaliText(inputText),
+      'summarize',
+      'সারসংক্ষেপ (Summary)'
+    );
+  }, [inputText]);
+
+  const handleNavigateToCorrection = (correction: Correction) => {
+    setHighlightedCorrection({ start: correction.diffStartIndex, end: correction.diffEndIndex });
+    // Reset after animation duration to allow re-triggering
+    setTimeout(() => setHighlightedCorrection(null), 1500);
+  };
+
+  return (
+     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <AnimatePresence>
+        {showModal && <OnboardingModal onClose={() => setShowModal(false)} />}
+      </AnimatePresence>
+      <div className="flex-grow w-full flex container mx-auto p-4 md:p-6 lg:p-8 gap-6">
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+          onCorrect={handleCorrection}
+          onTranslate={handleTranslate}
+          onSummarize={handleSummarize}
+          isLoading={isLoading}
+          loadingAction={loadingAction}
+          writingStyle={writingStyle}
+          setWritingStyle={setWritingStyle}
+          hasInput={!!inputText.trim()}
+        />
+        <main className="flex-1 flex flex-col gap-6 min-w-0">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="h-[250px] flex flex-col"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <InputPanel
+              inputText={inputText}
+              setInputText={setInputText}
+              isLoading={isLoading}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="h-[250px] flex flex-col"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+            <OutputPanel
+              originalText={originalText}
+              outputText={outputText}
+              setOutputText={setOutputText}
+              isLoading={isLoading}
+              error={error}
+              outputTitle={outputTitle}
+              loadingAction={loadingAction}
+              diffResult={diffResult}
+              highlightedCorrection={highlightedCorrection}
+            />
+          </motion.div>
+        </main>
+        <AnimatePresence>
+          {diffResult && (
+             <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className="w-[300px] h-[500px] hidden xl:flex"
+             >
+                <CorrectionsPanel diffResult={diffResult} onNavigate={handleNavigateToCorrection} />
+             </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <footer className="text-center p-4 text-slate-500 text-sm">
+        <p>Powered by Google Gemini</p>
       </footer>
     </div>
   );

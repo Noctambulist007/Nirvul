@@ -17,7 +17,6 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
               className="bg-white min-h-screen h-full"
             >
               <HeaderMain />
-              <HistorySidebar />
               {children}
             </main>
           </TanstackProvider>

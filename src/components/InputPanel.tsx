@@ -1,7 +1,7 @@
 import { Button, Select } from "antd";
 import React, { useState } from "react";
 import { CheckCircle, FileText, Languages } from "lucide-react";
-import { LoadingAction, WritingStyle } from "@/app/page";
+import { LoadingAction, WritingStyle } from "@/app/(core)/page";
 
 const { Option } = Select;
 

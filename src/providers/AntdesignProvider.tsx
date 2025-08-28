@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import "@ant-design/v5-patch-for-react-19";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider, message } from "antd";
@@ -39,6 +39,28 @@ const AntdesignProvider = ({ children }: React.PropsWithChildren) => {
             colorTextPlaceholder: "var(--color-nirvul-gray-500)",
           },
           components: {
+            Layout: {
+              bodyBg: "var(--color-white)",
+              footerBg: "var(--color-nirvul-gray-50)",
+              footerPadding: "24px 50px",
+
+              headerBg: "var(--color-nirvul-primary-500)",
+              headerColor: "var(--color-white)",
+              headerHeight: 64,
+              headerPadding: "0 50px",
+
+              lightSiderBg: "var(--color-white)",
+              lightTriggerBg: "var(--color-nirvul-gray-100)",
+              lightTriggerColor: "var(--color-nirvul-gray-900)",
+
+              siderBg: "var(--color-nirvul-primary-50)",
+              triggerBg: "var(--color-nirvul-primary-600)",
+              triggerColor: "var(--color-white)",
+              triggerHeight: 48,
+
+              zeroTriggerHeight: 40,
+              zeroTriggerWidth: 40,
+            },
             Button: {
               colorPrimaryText: "var(--color-white)",
               colorPrimary: "var(--color-nirvul-primary-500)",
@@ -54,6 +76,57 @@ const AntdesignProvider = ({ children }: React.PropsWithChildren) => {
               defaultActiveBorderColor: "var(--color-nirvul-primary-500)",
               contentFontSize: 16,
               borderColorDisabled: "var(--color-nirvul-gray-200)",
+            },
+            Menu: {
+              activeBarBorderWidth: 2,
+              activeBarHeight: 2,
+              activeBarWidth: 0,
+              collapsedIconSize: 16,
+              collapsedWidth: 80,
+
+              // Danger states (light mode)
+              dangerItemActiveBg: "var(--color-nirvul-red-50)",
+              dangerItemColor: "var(--color-nirvul-red-500)",
+              dangerItemHoverColor: "var(--color-nirvul-red-600)",
+              dangerItemSelectedBg: "var(--color-nirvul-red-50)",
+              dangerItemSelectedColor: "var(--color-nirvul-red-600)",
+
+              // Popup
+              dropdownWidth: 160,
+              popupBg: "var(--color-white)",
+              zIndexPopup: 1050,
+
+              // Group title
+              groupTitleColor: "var(--color-nirvul-gray-500)",
+              groupTitleFontSize: 14,
+              groupTitleLineHeight: 1.6,
+
+              // Horizontal menus
+              horizontalItemBorderRadius: 6,
+              horizontalItemHoverBg: "transparent",
+              horizontalItemHoverColor: "var(--color-nirvul-primary-500)",
+              horizontalItemSelectedBg: "transparent",
+              horizontalItemSelectedColor: "var(--color-nirvul-primary-600)",
+              horizontalLineHeight: "46px",
+
+              // Icons
+              iconMarginInlineEnd: 10,
+              iconSize: 16,
+
+              // Items
+              itemActiveBg: "var(--color-nirvul-primary-500)",
+              itemBg: "var(--color-nirvul-primary-50)",
+              itemBorderRadius: 8,
+              itemColor: "var(--color-nirvul-gray-900)",
+              itemDisabledColor: "var(--color-nirvul-gray-400)",
+              itemHeight: 40,
+              itemHoverBg: "var(--color-nirvul-primary-100)",
+              itemHoverColor: "var(--color-nirvul-gray-900)",
+              itemMarginBlock: 4,
+              itemMarginInline: 4,
+              itemPaddingInline: 16,
+              itemSelectedBg: "var(--color-nirvul-primary-500)",
+              itemSelectedColor: "var(--color-white)",
             },
             Input: {
               activeBorderColor: "var(--color-nirvul-primary-500)",
@@ -159,7 +232,7 @@ const AntdesignProvider = ({ children }: React.PropsWithChildren) => {
               titleFontSize: 15,
               contentFontSize: 25,
               lineHeight: 1.5,
-            }
+            },
           },
         }}
       >

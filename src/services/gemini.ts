@@ -1,5 +1,5 @@
 
-import { WritingStyle } from "@/app/page";
+import { WritingStyle } from "@/app/(core)/page";
 import { GoogleGenAI } from "@google/genai";
 
 // Ensure the API key is available as an environment variable

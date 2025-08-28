@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { getCorrectionList } from '../utils/diff';
-import type { DiffResult, Correction } from '../types';
+import type { DiffResult, Correction } from '@/types';
 import { LightbulbIcon } from './icons';
+import { getCorrectionList } from '@/utils/diff';
 
 interface CorrectionsPanelProps {
   diffResult: DiffResult[];

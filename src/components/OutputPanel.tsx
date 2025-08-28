@@ -189,7 +189,7 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ originalText, outputTe
     }
     if (!outputText && !diffResult) {
       return (
-        <div className="absolute inset-0 flex items-center justify-center text-gray-400 p-4">
+        <div className="absolute inset-0 flex items-center justify-center text-nirvul-gray-400 p-4">
           <p className="text-center">আপনার ফলাফল এখানে দেখানো হবে।</p>
         </div>
       );
@@ -233,10 +233,10 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ originalText, outputTe
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col h-full border border-gray-200/50">
       <div className="flex justify-between items-center mb-4 min-h-[40px]">
-        <h2 className="text-xl font-semibold text-gray-800">{outputTitle}</h2>
+        <h2 className="text-xl font-semibold text-nirvul-gray-800">{outputTitle}</h2>
         <div className="flex items-center gap-2">
             {isEditable && (
-              <button onClick={() => setShowFindReplace(!showFindReplace)} className="p-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-full transition-colors" aria-label="Find and Replace">
+              <button onClick={() => setShowFindReplace(!showFindReplace)} className="p-2 text-sm bg-gray-100 hover:bg-gray-200 text-nirvul-gray-700 font-medium rounded-full transition-colors" aria-label="Find and Replace">
                 <SearchIcon />
               </button>
             )}
@@ -247,10 +247,10 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ originalText, outputTe
             )}
             {hasResult && (
               <>
-                <button onClick={handleCopy} className="flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-1.5 px-3 rounded-md transition-colors" aria-label="Copy text">
+                <button onClick={handleCopy} className="flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-nirvul-gray-700 font-medium py-1.5 px-3 rounded-md transition-colors" aria-label="Copy text">
                   <CopyIcon /> {copyButtonText}
                 </button>
-                <button onClick={handleDownload} className="flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-1.5 px-3 rounded-md transition-colors" aria-label="Download text">
+                <button onClick={handleDownload} className="flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-nirvul-gray-700 font-medium py-1.5 px-3 rounded-md transition-colors" aria-label="Download text">
                   <DownloadIcon /> Download
                 </button>
               </>

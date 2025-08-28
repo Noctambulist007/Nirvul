@@ -1,13 +1,13 @@
 
+import { WritingStyle } from "@/app/page";
 import { GoogleGenAI } from "@google/genai";
-import { WritingStyle } from '../App';
 
 // Ensure the API key is available as an environment variable
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set.");
+if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+  throw new Error("NEXT_PUBLIC_GEMINI_API_KEY environment variable not set.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
 const getBaseSystemInstruction = () => `You are a world-class expert in the Bengali (Bangla) language, specializing in linguistics, spelling, grammar, and sentence structure. Your sole purpose is to receive a piece of Bengali text and meticulously correct any errors you find.
 

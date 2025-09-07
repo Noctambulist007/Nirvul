@@ -2,6 +2,7 @@ import { Button, Select } from "antd";
 import React, { useState } from "react";
 import { CheckCircle, FileText, Languages } from "lucide-react";
 import { LoadingAction, WritingStyle } from "@/app/(core)/page";
+import { useMenu } from "@/contexts/MenuContext";
 
 const { Option } = Select;
 
@@ -30,6 +31,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
   setWritingStyle,
   hasInput,
 }) => {
+  const { activeKey } = useMenu();
+
   const charCount = inputText.length;
   const wordCount =
     inputText.trim() === "" ? 0 : inputText.trim().split(/\s+/).length;
@@ -77,13 +80,15 @@ export const InputPanel: React.FC<InputPanelProps> = ({
         <div className="flex items-center justify-between mt-3 px-2 text-sm text-nirvul-gray-600">
           {/* Action buttons */}
           <div className="flex gap-2">
+            
             <Button
               type="primary"
               icon={<CheckCircle className="w-5 h-5 text-green-600" />}
               className="flex items-center gap-1 px-3 py-1 rounded-md"
               onClick={onCorrect}
               loading={isLoading && loadingAction === "correct"}
-              disabled={isLoading || !hasInput}
+              disabled={isLoading || !hasInput || activeKey !== "correct"}
+              hidden={activeKey !== "correct"}
             >
               শুদ্ধ করুন
             </Button>
@@ -94,7 +99,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               className="flex items-center gap-1 px-3 py-1 rounded-md"
               onClick={onTranslate}
               loading={isLoading && loadingAction === "translate"}
-              disabled={isLoading || !hasInput}
+              disabled={isLoading || !hasInput || activeKey !== "translate"}
+              hidden={activeKey !== "translate"}
             >
               অনুবাদ
             </Button>
@@ -105,7 +111,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               className="flex items-center gap-1 px-3 py-1 rounded-md"
               onClick={onSummarize}
               loading={isLoading && loadingAction === "summarize"}
-              disabled={isLoading || !hasInput}
+              disabled={isLoading || !hasInput || activeKey !== "summarize"}
+              hidden={activeKey !== "summarize"}
             >
               সারসংক্ষেপ
             </Button>

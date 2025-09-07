@@ -94,31 +94,30 @@ const HeaderMain = () => {
   return (
     <header
       aria-label="Main navigation"
-      className="shadow-xs sticky left-0 top-0 z-50 w-full bg-white py-3.5"
+      className="shadow-xs sticky left-0 top-0 z-50 w-full bg-nirvul-primary-50 py-3.5"
     >
       <div className="container relative">
-        <nav
-          className="flex items-center justify-between gap-7"
-          role="navigation"
-        >
+        <nav className="flex items-center justify-between" role="navigation">
           {/* Logo */}
           <div className="flex shrink-0 items-center">
-            <div className="relative border-r border-gray-300 pr-7">
-              <Link
-                href="/"
-                className="flex w-50 items-center focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500 rounded-md"
-                aria-label="Nirvul home - Your Bengali writing AI assistant"
-              >
-                <div>
-                  <h1 className="text-xl md:text-3xl font-bold text-nirvul-primary-800">
-                    নিরভুল (Nirvul)
-                  </h1>
-                  <p className="text-nirvul-gray-500 text-sm md:text-base">
-                    আপনার বাংলা লেখার AI সহযোগী
-                  </p>
-                </div>
-              </Link>
-            </div>
+            {!user && (
+              <div className="relative border-r border-gray-300 pr-7">
+                <Link
+                  href="/"
+                  className="flex w-50 items-center focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500 rounded-md"
+                  aria-label="Nirvul home - Your Bengali writing AI assistant"
+                >
+                  <div>
+                    <h1 className="text-xl md:text-3xl font-bold text-nirvul-primary-800">
+                      নির্ভুল (Nirvul)
+                    </h1>
+                    <p className="text-nirvul-gray-500 text-sm md:text-base">
+                      আপনার বাংলা লেখার AI সহযোগী
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Actions */}

@@ -53,7 +53,7 @@ const AntdesignProvider = ({ children }: React.PropsWithChildren) => {
               lightTriggerBg: "var(--color-nirvul-gray-100)",
               lightTriggerColor: "var(--color-nirvul-gray-900)",
 
-              siderBg: "var(--color-nirvul-primary-100)",
+              siderBg: "linear-gradient(135deg, var(--color-nirvul-primary-500) 0%, var(--color-nirvul-primary-700) 100%)",
               triggerBg: "var(--color-nirvul-primary-600)",
               triggerColor: "var(--color-white)",
               triggerHeight: 48,
@@ -115,7 +115,7 @@ const AntdesignProvider = ({ children }: React.PropsWithChildren) => {
 
               // Items
               itemActiveBg: "var(--color-nirvul-primary-500)",
-              itemBg: "var(--color-nirvul-primary-100)",
+              itemBg: "var(--color-nirvul-primary-50)",
               itemBorderRadius: 8,
               itemColor: "var(--color-nirvul-gray-900)",
               itemDisabledColor: "var(--color-nirvul-gray-400)",

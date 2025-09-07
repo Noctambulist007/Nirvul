@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Menu, X, User } from "lucide-react";
-import { Button, Spin, Avatar, Dropdown } from "antd";
+import { Menu, X, Sparkles, Crown } from "lucide-react";
+import {Avatar } from "antd";
 import { useUser } from "@/hooks/useUser";
 import useAuth from "@/hooks/useAuth";
 import {
@@ -94,28 +94,37 @@ const HeaderMain = () => {
   return (
     <header
       aria-label="Main navigation"
-      className="shadow-xs sticky left-0 top-0 z-50 w-full bg-nirvul-primary-50 py-3.5"
+      className="sticky left-0 top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-nirvul-gray-200/50 shadow-lg"
     >
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-gradient-to-r from-nirvul-primary-25/30 via-white/40 to-nirvul-primary-50/30"></div>
+      
       <div className="container relative">
-        <nav className="flex items-center justify-between" role="navigation">
-          {/* Logo */}
+        <nav className="flex items-center justify-between py-4" role="navigation">
+          {/* Logo Section */}
           <div className="flex shrink-0 items-center">
             {!user && (
-              <div className="relative border-r border-gray-300 pr-7">
+              <div className="relative">
                 <Link
                   href="/"
-                  className="flex w-50 items-center focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500 rounded-md"
+                  className="group flex items-center space-x-3 px-4 py-2 rounded-2xl hover:bg-nirvul-primary-50/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50"
                   aria-label="Nirvul home - Your Bengali writing AI assistant"
                 >
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-nirvul-primary-500 to-nirvul-primary-700 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
                   <div>
-                    <h1 className="text-xl md:text-3xl font-bold text-nirvul-primary-800">
-                      নির্ভুল (Nirvul)
+                    <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-nirvul-primary-800 to-nirvul-primary-600 bg-clip-text text-transparent">
+                      নির্ভুল
                     </h1>
-                    <p className="text-nirvul-gray-500 text-sm md:text-base">
-                      আপনার বাংলা লেখার AI সহযোগী
+                    <p className="text-nirvul-gray-600 text-sm md:text-base font-medium">
+                      বাংলা লেখার AI সহযোগী
                     </p>
                   </div>
                 </Link>
+                
+                {/* Decorative line */}
+                <div className="absolute -right-6 top-1/2 transform -translate-y-1/2 w-px h-12 bg-gradient-to-b from-transparent via-nirvul-gray-300 to-transparent"></div>
               </div>
             )}
           </div>
@@ -123,29 +132,36 @@ const HeaderMain = () => {
           {/* Actions */}
           <div className="flex items-center gap-4">
             {/* Desktop Buttons */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-4">
               {isLoading ? (
                 <div
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-3 px-4 py-2"
                   role="status"
                   aria-label="Loading user information"
                 >
-                  <Spin size="small" />
+                  <div className="w-8 h-8 border-2 border-nirvul-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-nirvul-gray-600 font-medium">লোডিং...</span>
                   <span className="sr-only">Loading...</span>
                 </div>
               ) : user ? (
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-4">
                   {/* User Avatar and Info */}
-                  <div className="flex items-center gap-2">
-                    <Avatar
-                      size="default"
-                      className="bg-nirvul-primary-600 text-white font-medium"
-                      icon={!user.name ? <UserOutlined /> : null}
-                    >
-                      {user.name ? getUserInitials(user.name) : null}
-                    </Avatar>
+                  <div className="flex items-center gap-3 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-2xl border border-nirvul-gray-200/50 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="relative">
+                      <Avatar
+                        size="default"
+                        className="bg-gradient-to-br from-nirvul-primary-500 to-nirvul-primary-700 text-white font-semibold shadow-lg border-2 border-white"
+                        icon={!user.name ? <UserOutlined /> : null}
+                      >
+                        {user.name ? getUserInitials(user.name) : null}
+                      </Avatar>
+                      {/* Online indicator */}
+                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-sm">
+                        <div className="w-full h-full bg-green-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
                     <div className="hidden lg:block">
-                      <p className="text-sm font-medium text-nirvul-gray-900 truncate max-w-32">
+                      <p className="text-sm font-semibold text-nirvul-gray-900 truncate max-w-32">
                         {user.name || "User"}
                       </p>
                       {user.email && (
@@ -156,59 +172,57 @@ const HeaderMain = () => {
                     </div>
                   </div>
 
-                  {/* Desktop Logout - Simple button */}
-                  <Button
-                    type="primary"
-                    size="middle"
-                    danger
-                    icon={<LogoutOutlined />}
+                  {/* Desktop Logout - Enhanced button */}
+                  <button
                     onClick={handleLogout}
+                    className="group flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500/50"
                     aria-label="Logout from your account"
                   >
-                    Logout
-                  </Button>
+                    <LogoutOutlined className="group-hover:rotate-12 transition-transform duration-300" />
+                    <span>লগআউট</span>
+                  </button>
                 </div>
               ) : (
-                <>
-                  <Button
-                    type="default"
-                    size="middle"
-                    icon={<LoginOutlined />}
+                <div className="flex items-center gap-3">
+                  <button
+                    className="group flex items-center space-x-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-nirvul-gray-300 text-nirvul-gray-700 rounded-xl font-medium shadow-sm hover:shadow-lg hover:bg-nirvul-primary-50 hover:border-nirvul-primary-300 hover:text-nirvul-primary-700 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50"
                     aria-label="Log in to your account"
                   >
-                    <Link href="/login" className="flex items-center">
-                      Log In
+                    <Link href="/login" className="flex items-center space-x-2">
+                      <LoginOutlined className="group-hover:translate-x-0.5 transition-transform duration-300" />
+                      <span>লগইন</span>
                     </Link>
-                  </Button>
-                  <Button
-                    type="primary"
-                    size="middle"
-                    icon={<UserAddOutlined />}
+                  </button>
+                  <button
+                    className="group flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-nirvul-primary-600 to-nirvul-primary-700 text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:from-nirvul-primary-700 hover:to-nirvul-primary-800 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50"
                     aria-label="Create a new account"
                   >
-                    <Link href="/register" className="flex items-center">
-                      Register
+                    <Link href="/register" className="flex items-center space-x-2">
+                      <UserAddOutlined className="group-hover:rotate-12 transition-transform duration-300" />
+                      <span>রেজিস্টার</span>
                     </Link>
-                  </Button>
-                </>
+                  </button>
+                </div>
               )}
             </div>
 
             {/* Mobile menu toggle */}
             <button
               onClick={handleMobileMenuToggle}
-              className="p-2 md:hidden rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500 transition-colors"
+              className="group p-3 md:hidden rounded-2xl bg-white/80 backdrop-blur-sm border border-nirvul-gray-300 hover:bg-nirvul-primary-50 hover:border-nirvul-primary-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50 transition-all duration-300 shadow-sm hover:shadow-lg"
               aria-label={
                 mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"
               }
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
             >
-              {mobileMenuOpen ? (
-                <X size={24} className="text-nirvul-gray-600" />
-              ) : (
-                <Menu className="text-nirvul-gray-600" size={24} />
-              )}
+              <div className="relative w-6 h-6">
+                {mobileMenuOpen ? (
+                  <X size={24} className="text-nirvul-gray-700 group-hover:text-nirvul-primary-700 transition-colors absolute inset-0" />
+                ) : (
+                  <Menu className="text-nirvul-gray-700 group-hover:text-nirvul-primary-700 transition-colors absolute inset-0" size={24} />
+                )}
+              </div>
             </button>
           </div>
         </nav>
@@ -218,53 +232,67 @@ const HeaderMain = () => {
           <div
             ref={mobileMenuRef}
             id="mobile-menu"
-            className="absolute left-0 right-0 top-full z-50 mt-0 bg-white px-4 py-6 shadow-lg border-t border-gray-100 transition-all duration-300 md:hidden"
+            className="absolute left-4 right-4 top-full z-50 mt-2 bg-white/95 backdrop-blur-xl px-6 py-6 shadow-2xl border border-nirvul-gray-200/50 rounded-3xl transition-all duration-300 md:hidden"
             role="menu"
             aria-label="Mobile navigation menu"
+            style={{
+              animation: 'slideIn 0.3s ease-out'
+            }}
           >
-            <div className="flex flex-col gap-4">
+            {/* Mobile menu background decoration */}
+            <div className="absolute inset-0 bg-gradient-to-br from-nirvul-primary-25/30 via-transparent to-nirvul-primary-50/20 rounded-3xl"></div>
+            
+            <div className="relative flex flex-col gap-6">
               {/* User Info Section for Mobile */}
               {user && (
-                <div className="flex items-center gap-3 pb-4 border-b border-gray-200">
-                  <Avatar
-                    size="large"
-                    className="bg-nirvul-primary-600 text-white font-medium"
-                    icon={!user.name ? <UserOutlined /> : null}
-                  >
-                    {user.name ? getUserInitials(user.name) : null}
-                  </Avatar>
+                <div className="flex items-center gap-4 pb-6 border-b border-nirvul-gray-200">
+                  <div className="relative">
+                    <Avatar
+                      size="large"
+                      className="bg-gradient-to-br from-nirvul-primary-500 to-nirvul-primary-700 text-white font-semibold shadow-lg border-2 border-white"
+                      icon={!user.name ? <UserOutlined /> : null}
+                    >
+                      {user.name ? getUserInitials(user.name) : null}
+                    </Avatar>
+                    {/* Online indicator */}
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white shadow-sm">
+                      <div className="w-full h-full bg-green-400 rounded-full animate-pulse"></div>
+                    </div>
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-medium text-nirvul-gray-900 truncate">
+                    <p className="text-base font-semibold text-nirvul-gray-900 truncate">
                       {user.name || "User"}
                     </p>
                     {user.email && (
-                      <p className="text-sm text-nirvul-gray-500 truncate">
+                      <p className="text-sm text-nirvul-gray-600 truncate">
                         {user.email}
                       </p>
                     )}
+                    <div className="flex items-center space-x-2 mt-1">
+                      <Crown className="w-3 h-3 text-nirvul-primary-500" />
+                      <span className="text-xs text-nirvul-primary-600 font-medium">প্রিমিয়াম ব্যবহারকারী</span>
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Action Buttons */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4">
                 {isLoading ? (
                   <div
-                    className="flex justify-center py-4"
+                    className="flex justify-center items-center py-8"
                     role="status"
                     aria-label="Loading user information"
                   >
-                    <Spin size="default" />
+                    <div className="flex flex-col items-center space-y-3">
+                      <div className="w-8 h-8 border-2 border-nirvul-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-nirvul-gray-600 font-medium">লোডিং...</span>
+                    </div>
                     <span className="sr-only">Loading...</span>
                   </div>
                 ) : user ? (
-                  <Button
-                    icon={<LogoutOutlined />}
-                    type="primary"
-                    block
-                    danger
-                    size="large"
-                    className="h-12"
+                  <button
+                    className="group flex items-center justify-center space-x-3 w-full h-14 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500/50"
                     onClick={() => {
                       handleLogout();
                       closeMobileMenu();
@@ -272,44 +300,39 @@ const HeaderMain = () => {
                     aria-label="Logout from your account"
                     role="menuitem"
                   >
-                    Logout
-                  </Button>
+                    <LogoutOutlined className="text-lg group-hover:rotate-12 transition-transform duration-300" />
+                    <span>লগআউট</span>
+                  </button>
                 ) : (
-                  <div className="flex flex-col gap-3">
-                    <Button
-                      type="default"
-                      block
-                      size="large"
-                      className="h-12"
-                      icon={<LoginOutlined />}
+                  <div className="flex flex-col gap-4">
+                    <button
+                      className="group flex items-center justify-center space-x-3 w-full h-14 bg-white/80 backdrop-blur-sm border border-nirvul-gray-300 text-nirvul-gray-700 rounded-2xl font-semibold shadow-sm hover:shadow-lg hover:bg-nirvul-primary-50 hover:border-nirvul-primary-300 hover:text-nirvul-primary-700 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50"
                       aria-label="Log in to your account"
                       role="menuitem"
                     >
                       <Link
                         href="/login"
                         onClick={closeMobileMenu}
-                        className="w-full h-full flex items-center justify-center"
+                        className="w-full h-full flex items-center justify-center space-x-3"
                       >
-                        Log In
+                        <LoginOutlined className="text-lg group-hover:translate-x-0.5 transition-transform duration-300" />
+                        <span>লগইন</span>
                       </Link>
-                    </Button>
-                    <Button
-                      type="primary"
-                      block
-                      size="large"
-                      className="h-12"
-                      icon={<UserAddOutlined />}
+                    </button>
+                    <button
+                      className="group flex items-center justify-center space-x-3 w-full h-14 bg-gradient-to-r from-nirvul-primary-600 to-nirvul-primary-700 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl hover:from-nirvul-primary-700 hover:to-nirvul-primary-800 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500/50"
                       aria-label="Create a new account"
                       role="menuitem"
                     >
                       <Link
                         href="/register"
                         onClick={closeMobileMenu}
-                        className="w-full h-full flex items-center justify-center"
+                        className="w-full h-full flex items-center justify-center space-x-3"
                       >
-                        Register
+                        <UserAddOutlined className="text-lg group-hover:rotate-12 transition-transform duration-300" />
+                        <span>রেজিস্টার</span>
                       </Link>
-                    </Button>
+                    </button>
                   </div>
                 )}
               </div>
@@ -320,12 +343,38 @@ const HeaderMain = () => {
         {/* Overlay for mobile menu */}
         {mobileMenuOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-25 z-40 md:hidden"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
             onClick={closeMobileMenu}
             aria-hidden="true"
+            style={{
+              animation: 'fadeIn 0.3s ease-out'
+            }}
           />
         )}
       </div>
+
+      {/* Custom animations */}
+      <style jsx>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </header>
   );
 };

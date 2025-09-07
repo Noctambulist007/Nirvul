@@ -65,10 +65,10 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
         }}
       >
         {/* Logo Section with Enhanced Design */}
-        <div className="border-b border-white/20 backdrop-blur-sm">
+        <div className=" border-b border-white/20 backdrop-blur-sm">
           <Link
             href="/"
-            className="flex items-center justify-center space-x-3 pt-2 hover:bg-white/10 transition-all duration-300 group"
+            className="flex items-center justify-center space-x-3 p-2.5 hover:bg-white/10 transition-all duration-300 group"
             aria-label="Nirvul home - Your Bengali writing AI assistant"
           >
             <div className="text-center">
@@ -81,7 +81,7 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
               <p className="text-nirvul-primary-100/80 text-sm font-medium group-hover:text-white/90 transition-colors">
                 বাংলা লেখার AI সহযোগী
               </p>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-nirvul-primary-100/50 to-transparent mx-auto mt-1"></div>
+              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-nirvul-primary-100/50 to-transparent mx-auto mt-3"></div>
             </div>
           </Link>
         </div>
@@ -192,7 +192,7 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
 const RootLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <html lang="en">
-      <body className="[&::-webkit-scrollbar-thumb]:bg-nirvul-primary-400 [&::-webkit-scrollbar-track]:bg-nirvul-gray-100 [&::-webkit-scrollbar]:w-2 antialiased">
+      <body className="[&::-webkit-scrollbar-thumb]:bg-nirvul-gray-600 [&::-webkit-scrollbar-track]:bg-nirvul-gray-200 h-full flex-1 grow overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-1 antialiased">
         <AntdesignProvider>
           <TanstackProvider>
             <MenuProvider>

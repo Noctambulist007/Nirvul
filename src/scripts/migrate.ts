@@ -59,11 +59,15 @@ ALTER TABLE public.history ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own profile" ON public.users
   FOR SELECT USING (auth.uid() = auth_user_id);
 
-CREATE POLICY "Users can view own history" ON public.history
-  FOR SELECT USING (
-    auth.uid() IN (
-      SELECT auth_user_id FROM public.users WHERE id = user_id
-    )
+CREATE POLICY "Users can do everything with their own history" ON public.history
+  TO AUTHENTICATED
+  USING (
+      exists (
+        select 1
+        from public.users u
+        where u.id = history.user_id
+        and u.auth_user_id = auth.uid()
+      )
   );
 `)
 }

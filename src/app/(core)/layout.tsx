@@ -4,18 +4,25 @@ import "@/styles/global.css";
 import AntdesignProvider from "@/providers/AntdesignProvider";
 import TanstackProvider from "@/providers/TanstackProvider";
 import HeaderMain from "@/components/HeaderMain";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Typography } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import { CheckCircle, FileText, History, Languages, Sparkles } from "lucide-react";
 import { MenuProvider, useMenu } from "@/contexts/MenuContext";
 import Link from "next/link";
+import HistorySider from "@/components/HistorySidebar";
+const { Text, Title } = Typography;
 
 const MainContent = ({ children }: React.PropsWithChildren) => {
-  const { activeKey, setActiveKey } = useMenu();
+  const { activeKey, setActiveKey, setShowHistorySider} = useMenu();
 
   const handleMenuClick = ({ key }: { key: string }) => {
     setActiveKey(key);
+    if (key === "history") {
+      setShowHistorySider(true);
+    } else {
+      setShowHistorySider(false);
+    }
   };
 
   const menuItems = [
@@ -41,7 +48,7 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
       key: "history",
       icon: <History className="w-5 h-5" />,
       label: "হিস্ট্রি",
-      description: "পূর্বের কাজের তালিকা"
+      description: "আপনার লেখার যাত্রা"
     }
   ];
 
@@ -158,7 +165,7 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
           </div>
         </div>
       </Sider>
-
+      <HistorySider />
       <Layout className="bg-transparent relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-nirvul-primary-25/30 via-transparent to-nirvul-gray-50/50 pointer-events-none"></div>

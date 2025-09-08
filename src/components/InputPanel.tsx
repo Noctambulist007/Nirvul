@@ -46,7 +46,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
           loading: isLoading && loadingAction === "correct",
           icon: <CheckCircle className="w-4 h-4" />,
           text: "শুদ্ধ করুন",
-          className: "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 border-0 shadow-lg shadow-success-500/25"
+          className:
+            "bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 border-0 shadow-lg shadow-success-500/25",
         };
       case "translate":
         return {
@@ -54,7 +55,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
           loading: isLoading && loadingAction === "translate",
           icon: <Languages className="w-4 h-4" />,
           text: "অনুবাদ",
-          className: "bg-gradient-to-r from-blue-light-500 to-blue-light-600 hover:from-blue-light-600 hover:to-blue-light-700 border-0 shadow-lg shadow-blue-light-500/25"
+          className:
+            "bg-gradient-to-r from-blue-light-500 to-blue-light-600 hover:from-blue-light-600 hover:to-blue-light-700 border-0 shadow-lg shadow-blue-light-500/25",
         };
       case "summarize":
         return {
@@ -62,7 +64,8 @@ export const InputPanel: React.FC<InputPanelProps> = ({
           loading: isLoading && loadingAction === "summarize",
           icon: <FileText className="w-4 h-4" />,
           text: "সারসংক্ষেপ",
-          className: "bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 border-0 shadow-lg shadow-purple-500/25"
+          className:
+            "bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 border-0 shadow-lg shadow-purple-500/25",
         };
       default:
         return null;
@@ -84,16 +87,18 @@ export const InputPanel: React.FC<InputPanelProps> = ({
               আপনার লেখাটি এখানে দিন
             </h2>
           </div>
-          
+
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-nirvul-gray-600">লিখনের ধরন</span>
+            <span className="text-sm font-medium text-nirvul-gray-600">
+              লিখনের ধরন
+            </span>
             <Select
               value={writingStyle}
               onChange={(val) => setWritingStyle(val)}
               className="min-w-[200px]"
               size="large"
               style={{
-                borderRadius: '12px',
+                borderRadius: "12px",
               }}
             >
               <Option value="standard">
@@ -124,10 +129,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
         {/* Text Input Area */}
         <div className="relative flex-1 flex flex-col">
           <textarea
-            className="w-full h-full p-6 border-2 border-nirvul-gray-200 rounded-2xl 
-                     focus:ring-4 focus:ring-nirvul-primary-100 focus:border-nirvul-primary-400 
-                     transition-all duration-300 resize-none text-lg leading-relaxed 
-                     bg-gradient-to-br from-nirvul-gray-25 to-white
+            className="w-full h-full p-4 text-base text-slate-700 placeholder-slate-400 bg-gray-50 rounded-lg border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-nirvul-primary-500 transition-all duration-200 bg-gradient-to-br from-nirvul-gray-25 to-white
                      placeholder:text-nirvul-gray-400 placeholder:font-medium
                      hover:border-nirvul-gray-300 hover:shadow-md
                      disabled:opacity-50 disabled:cursor-not-allowed
@@ -139,17 +141,20 @@ export const InputPanel: React.FC<InputPanelProps> = ({
             aria-label="Bengali text input"
             maxLength={10000}
             style={{
-              fontFamily: 'SolaimanLipi, Kalpurush, Arial, sans-serif',
+              fontFamily: "SolaimanLipi, Kalpurush, Arial, sans-serif",
             }}
           />
-          
+
           {/* Character limit indicator */}
           {charCount > 8000 && (
-            <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold
-              ${charCount > 9500 
-                ? 'bg-error-100 text-error-700 border border-error-200' 
-                : 'bg-warning-100 text-warning-700 border border-warning-200'
-              }`}>
+            <div
+              className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold
+              ${
+                charCount > 9500
+                  ? "bg-error-100 text-error-700 border border-error-200"
+                  : "bg-warning-100 text-warning-700 border border-warning-200"
+              }`}
+            >
               {10000 - charCount} অক্ষর বাকি
             </div>
           )}
@@ -183,28 +188,35 @@ export const InputPanel: React.FC<InputPanelProps> = ({
             <div className="flex items-center gap-3 text-sm">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-nirvul-primary-400"></div>
-                <span className="font-semibold text-nirvul-gray-700">{wordCount}</span>
+                <span className="font-semibold text-nirvul-gray-700">
+                  {wordCount}
+                </span>
                 <span className="text-nirvul-gray-500">শব্দ</span>
               </div>
               <div className="w-px h-4 bg-nirvul-gray-300"></div>
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full bg-nirvul-gray-400"></div>
-                <span className="font-semibold text-nirvul-gray-700">{charCount}</span>
+                <span className="font-semibold text-nirvul-gray-700">
+                  {charCount}
+                </span>
                 <span className="text-nirvul-gray-500">অক্ষর</span>
               </div>
             </div>
 
             {/* Progress Bar */}
             <div className="w-24 h-2 bg-nirvul-gray-200 rounded-full overflow-hidden">
-              <div 
+              <div
                 className={`h-full transition-all duration-500 rounded-full
-                  ${charCount < 5000 
-                    ? 'bg-gradient-to-r from-success-400 to-success-500' 
-                    : charCount < 8000 
-                    ? 'bg-gradient-to-r from-warning-400 to-warning-500'
-                    : 'bg-gradient-to-r from-error-400 to-error-500'
+                  ${
+                    charCount < 5000
+                      ? "bg-gradient-to-r from-success-400 to-success-500"
+                      : charCount < 8000
+                      ? "bg-gradient-to-r from-warning-400 to-warning-500"
+                      : "bg-gradient-to-r from-error-400 to-error-500"
                   }`}
-                style={{ width: `${Math.min((charCount / 10000) * 100, 100)}%` }}
+                style={{
+                  width: `${Math.min((charCount / 10000) * 100, 100)}%`,
+                }}
               ></div>
             </div>
           </div>

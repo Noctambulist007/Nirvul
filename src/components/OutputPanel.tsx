@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Spinner } from './Spinner';
 import { CopyIcon, DownloadIcon, SearchIcon, ChevronDownIcon, ChevronUpIcon, PencilIcon } from './icons';
-import { LoadingAction, HighlightedCorrection } from '../App';
 import type { DiffResult } from '../types';
+import { HighlightedCorrection, LoadingAction } from '@/app/(core)/page';
 
 interface OutputPanelProps {
   originalText: string | null;

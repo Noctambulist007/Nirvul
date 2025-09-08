@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -9,12 +8,12 @@ interface OnboardingModalProps {
 export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => {
   return (
     <div 
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-nirvul-gray-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
       aria-modal="true"
       role="dialog"
     >
       <motion.div
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative"
+        className="bg-white rounded-2xl border border-nirvul-gray-200 shadow-2xl max-w-lg w-full p-6 md:p-8 relative transform scale-100 transition-transform duration-300"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
@@ -31,28 +30,28 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onClose }) => 
         </button>
 
         <div className="text-center">
-            <h2 className="text-2xl font-bold text-nirvul-primary-800 mb-2">নিরভুল-এ স্বাগতম!</h2>
-            <p className="text-nirvul-gray-600 mb-6">আপনার বাংলা লেখার নতুন AI সহযোগী।</p>
+            <h2 className="text-3xl font-bold text-nirvul-primary-800 mb-2 leading-tight">নির্ভুল-এ স্বাগতম!</h2>
+            <p className="text-nirvul-gray-600 mb-8">আপনার বাংলা লেখার নতুন AI সহযোগী।</p>
         </div>
         
-        <div className="space-y-4 text-left">
+        <div className="space-y-6 text-left">
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">১</div>
-                <p className="text-nirvul-gray-700">বাম দিকের প্যানেল থেকে কোনো কাজ বেছে নিন (যেমন <span className="font-semibold">'শুদ্ধ করুন'</span>) এবং ইনপুট বাক্সে আপনার লেখাটি দিন।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-50 text-nirvul-primary-700 rounded-full h-9 w-9 flex items-center justify-center font-bold text-lg shadow-sm">১</div>
+                <p className="text-nirvul-gray-700 mt-0.5">বাম দিকের প্যানেল থেকে কোনো কাজ বেছে নিন (যেমন <span className="font-semibold">'শুদ্ধ করুন'</span>) এবং ইনপুট বাক্সে আপনার লেখাটি দিন।</p>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">২</div>
-                <p className="text-nirvul-gray-700">আউটপুট প্যানেলে আপনার ফলাফল দেখুন। সংশোধনের ক্ষেত্রে, পরিবর্তনগুলো <span className="bg-green-100 text-green-800 px-1 rounded">সবুজ</span> এবং <span className="bg-red-100 text-red-800 px-1 rounded line-through">লাল</span> রঙে হাইলাইট করা হবে।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-50 text-nirvul-primary-700 rounded-full h-9 w-9 flex items-center justify-center font-bold text-lg shadow-sm">২</div>
+                <p className="text-nirvul-gray-700 mt-0.5">আউটপুট প্যানেলে আপনার ফলাফল দেখুন। সংশোধনের ক্ষেত্রে, পরিবর্তনগুলো <span className="bg-success-100 text-success-800 px-1 rounded">সবুজ</span> এবং <span className="bg-error-100 text-error-800 px-1 rounded line-through">লাল</span> রঙে হাইলাইট করা হবে।</p>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 bg-nirvul-primary-100 text-nirvul-primary-700 rounded-full h-8 w-8 flex items-center justify-center font-bold">৩</div>
-                <p className="text-nirvul-gray-700">ডানদিকের নতুন <span className="font-semibold">'সংশোধন'</span> প্যানেলে সমস্ত ভুলের তালিকা দেখুন এবং প্রয়োজনে আউটপুট সম্পাদনা করুন, কপি করুন বা ডাউনলোড করুন।</p>
+                <div className="flex-shrink-0 bg-nirvul-primary-50 text-nirvul-primary-700 rounded-full h-9 w-9 flex items-center justify-center font-bold text-lg shadow-sm">৩</div>
+                <p className="text-nirvul-gray-700 mt-0.5">ডানদিকের নতুন <span className="font-semibold">'সংশোধন'</span> প্যানেলে সমস্ত ভুলের তালিকা দেখুন এবং প্রয়োজনে আউটপুট সম্পাদনা করুন, কপি করুন বা ডাউনলোড করুন।</p>
             </div>
         </div>
 
         <button 
           onClick={onClose} 
-          className="mt-8 w-full bg-nirvul-primary-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-nirvul-primary-800 transition-colors duration-300"
+          className="mt-10 w-full bg-gradient-to-br from-nirvul-primary-600 to-nirvul-primary-700 text-white font-bold py-3.5 px-4 rounded-lg shadow-md hover:shadow-lg hover:from-nirvul-primary-700 hover:to-nirvul-primary-800 transition-all duration-300 transform hover:scale-105"
         >
           শুরু করুন
         </button>

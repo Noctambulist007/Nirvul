@@ -19,6 +19,8 @@ import {
 } from "antd";
 import { CloseCircleOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import { useMenu } from "@/contexts/MenuContext";
+import { useHistory } from "@/hooks/useHistory";
+import { useUser } from "@/hooks/useUser";
 
 const { Sider } = Layout;
 const { Text, Title } = Typography;
@@ -32,7 +34,11 @@ interface HistoryItem {
 }
 
 const HistorySider: React.FC = () => {
+  const {getHistory} = useHistory();
+  const {data: user} = useUser();
+  const {data: history, isLoading} = getHistory(user.id);
   const { showHistorySider, setShowHistorySider } = useMenu();
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([
     {

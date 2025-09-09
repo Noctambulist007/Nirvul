@@ -4,19 +4,20 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 export const useHistory = () => {
   const queryClient = useQueryClient();
 
-  const getHistory = async (userId: string) => {
+  const getHistory = (userId: string) => {
+    const fetchHistory = async () => {
+      const supabase = await createClient();
+      const { data } = await supabase
+        .from("history")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+      return data;
+    };
     return useQuery({
       queryKey: ["history"],
       queryFn: async () => {
-        const history = async () => {
-          const supabase = await createClient();
-          const { data } = await supabase
-            .from("history")
-            .select("*")
-            .eq("user_id", userId)
-            .order("created_at", { ascending: false });
-          return data;
-        };
+        const history = await fetchHistory();
         return history;
       },
     });
@@ -33,11 +34,11 @@ export const useHistory = () => {
         },
       ])
       .single();
-      if (!error) {
-        queryClient.invalidateQueries({ queryKey: ["history"] });
-      } else {
-        console.error(error.message);
-      }
+    if (!error) {
+      queryClient.invalidateQueries({ queryKey: ["history"] });
+    } else {
+      console.error(error.message);
+    }
   };
 
   return {

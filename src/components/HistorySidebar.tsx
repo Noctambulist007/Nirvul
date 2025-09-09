@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   History,
   Clock,
@@ -33,47 +33,28 @@ interface HistoryItem {
   type: "correction" | "translation" | "writing";
 }
 
-const HistorySider: React.FC = () => {
+const HistorySider = ({userId} : {userId: string}) => {
   const {getHistory} = useHistory();
-  const {data: user} = useUser();
-  const {data: history, isLoading} = getHistory(user.id);
+  const {data, isLoading} = getHistory(userId);
+  const history = data?.map((item) => ({
+      id: item.id,
+      title: item.data.type === 'correct' ? 'বানান সংশোধন' : item.data.type === 'translate' ? 'অনুবাদ' : 'লেখা সারসংক্ষেপ',
+      content: item.data.inputText,
+      timestamp: new Date(item.created_at),
+      type: item.data.type,
+    })) || []
+
+
   const { showHistorySider, setShowHistorySider } = useMenu();
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([
-    {
-      id: "1",
-      title: "বাংলা বানান সংশোধন",
-      content:
-        "আমার নাম রাহুল এবং আমি একজন ছাত্র। এই বাক্যটিতে কিছু বানান ভুল ছিল যা সংশোধন করা হয়েছে।",
-      timestamp: new Date(Date.now() - 1000 * 60 * 30),
-      type: "correction",
-    },
-    {
-      id: "2",
-      title: "English to Bengali Translation",
-      content:
-        "Hello, how are you today? I hope you are doing well and having a great day.",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
-      type: "translation",
-    },
-    {
-      id: "3",
-      title: "প্রবন্ধ লেখা সহায়তা",
-      content:
-        "বাংলাদেশের স্বাধীনতা যুদ্ধ নিয়ে একটি প্রবন্ধ লিখতে সাহায্য করেছি। মুক্তিযুদ্ধের ইতিহাস এবং গুরুত্ব নিয়ে আলোচনা।",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
-      type: "writing",
-    },
-    {
-      id: "4",
-      title: "ব্যাকরণ পরীক্ষা",
-      content:
-        "বাংলা ব্যাকরণের নিয়ম অনুযায়ী বাক্য গঠন এবং শব্দ প্রয়োগ পরীক্ষা করা হয়েছে।",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4),
-      type: "correction",
-    },
-  ]);
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>(history
+);
+
+
+useEffect(() => {
+  setHistoryItems(history);
+}, [history]);
 
   // Filter history
   const filteredHistory = historyItems.filter(
@@ -98,7 +79,7 @@ const HistorySider: React.FC = () => {
 
   const getTypeInfo = (type: string) => {
     switch (type) {
-      case "correction":
+      case "correct":
         return {
           icon: "✓",
           bg: "bg-success-50",
@@ -107,7 +88,7 @@ const HistorySider: React.FC = () => {
           label: "সংশোধন",
           badgeColor: "#17b26a",
         };
-      case "translation":
+      case "translate":
         return {
           icon: "🔄",
           bg: "bg-blue-light-50",
@@ -116,22 +97,13 @@ const HistorySider: React.FC = () => {
           label: "অনুবাদ",
           badgeColor: "#2065a2",
         };
-      case "writing":
-        return {
-          icon: "✏️",
-          bg: "bg-purple-50",
-          color: "text-purple-700",
-          border: "border-purple-200",
-          label: "লেখা",
-          badgeColor: "#6f1a9f",
-        };
       default:
         return {
           icon: "📝",
           bg: "bg-nirvul-gray-50",
           color: "text-nirvul-gray-700",
           border: "border-nirvul-gray-200",
-          label: "অন্যান্য",
+          label: "সারসংক্ষেপ",
           badgeColor: "#475467",
         };
     }

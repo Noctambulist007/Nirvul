@@ -68,6 +68,12 @@ export default function Home() {
     try {
       const result = await action();
       setOutputText(result);
+      // Create History Item
+      createHistory(user?.id, {
+        type: actionType,
+        inputText: inputText,
+        outputText: result,
+      })
     } catch (err) {
       console.error(err);
       setError("An error occurred. Please check the console and try again.");
@@ -106,6 +112,7 @@ export default function Home() {
 
       // Create History Item
       createHistory(user?.id, {
+        type: "correct",
         inputText: inputText,
         outputText: finalResult,
         diffResult: diffWords(inputText, finalResult),

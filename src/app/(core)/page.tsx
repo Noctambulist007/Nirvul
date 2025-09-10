@@ -10,7 +10,7 @@ import {
   summarizeBengaliText,
   translateBengaliToEnglish,
 } from "@/services/gemini";
-import { Correction, DiffResult } from "@/types";
+import { Correction } from "@/types";
 import { diffWords } from "@/utils/diff";
 import { Sparkles, BookOpen, Languages } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
@@ -24,16 +24,23 @@ export type HighlightedCorrection = { start: number; end: number } | null;
 export default function Home() {
   const { data: user } = useUser();
   const { createHistory } = useHistory();
-  const { inputText, setInputText } = useMenu();
-  const [originalText, setOriginalText] = useState<string | null>(null);
-  const [outputText, setOutputText] = useState<string>("");
-  const [diffResult, setDiffResult] = useState<DiffResult[] | null>(null);
+  const {
+    inputText,
+    setInputText,
+    originalText,
+    setOriginalText,
+    outputText,
+    setOutputText,
+    diffResult,
+    setDiffResult,
+    outputTitle,
+    setOutputTitle,
+  } = useMenu();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingAction, setLoadingAction] = useState<LoadingAction>(null);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [writingStyle, setWritingStyle] = useState<WritingStyle>("standard");
-  const [outputTitle, setOutputTitle] = useState<string>("আপনার ফলাফল");
   const [highlightedCorrection, setHighlightedCorrection] =
     useState<HighlightedCorrection>(null);
 
@@ -74,7 +81,7 @@ export default function Home() {
         type: actionType,
         inputText: inputText,
         outputText: result,
-      })
+      });
     } catch (err) {
       console.error(err);
       setError("An error occurred. Please check the console and try again.");
@@ -132,7 +139,7 @@ export default function Home() {
     performBlockingAction(
       () => translateBengaliToEnglish(inputText),
       "translate",
-      "English Translation"
+      "অনুবাদ"
     );
   }, [inputText]);
 
@@ -140,7 +147,7 @@ export default function Home() {
     performBlockingAction(
       () => summarizeBengaliText(inputText),
       "summarize",
-      "সারসংক্ষেপ (Summary)"
+      "সারসংক্ষেপ"
     );
   }, [inputText]);
 
@@ -160,19 +167,19 @@ export default function Home() {
         return {
           icon: <Sparkles className="w-5 h-5" />,
           text: "সংশোধন করা হচ্ছে...",
-          color: "from-success-500 to-success-600"
+          color: "from-success-500 to-success-600",
         };
       case "translate":
         return {
           icon: <Languages className="w-5 h-5" />,
           text: "অনুবাদ করা হচ্ছে...",
-          color: "from-blue-light-500 to-blue-light-600"
+          color: "from-blue-light-500 to-blue-light-600",
         };
       case "summarize":
         return {
           icon: <BookOpen className="w-5 h-5" />,
           text: "সারসংক্ষেপ তৈরি হচ্ছে...",
-          color: "from-purple-500 to-purple-600"
+          color: "from-purple-500 to-purple-600",
         };
       default:
         return null;
@@ -205,7 +212,9 @@ export default function Home() {
               exit={{ scale: 0.8, opacity: 0 }}
               className="bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-4 border border-nirvul-gray-100"
             >
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${actionInfo.color} flex items-center justify-center text-white shadow-lg`}>
+              <div
+                className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${actionInfo.color} flex items-center justify-center text-white shadow-lg`}
+              >
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -225,7 +234,11 @@ export default function Home() {
                 <motion.div
                   className={`h-full bg-gradient-to-r ${actionInfo.color} rounded-full`}
                   animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                 />
               </div>
             </motion.div>
@@ -245,7 +258,11 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{
+                duration: 0.6,
+                delay: 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
               className="flex-1 min-h-[300px] max-h-[400px]"
             >
               <InputPanel
@@ -266,7 +283,11 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{
+                duration: 0.6,
+                delay: 0.2,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
               className="flex-1 min-h-[300px] max-h-[400px]"
             >
               <OutputPanel
@@ -290,11 +311,11 @@ export default function Home() {
                 initial={{ opacity: 0, x: 50, scale: 0.95 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 50, scale: 0.95 }}
-                transition={{ 
-                  type: "spring", 
-                  stiffness: 400, 
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
                   damping: 25,
-                  mass: 0.5
+                  mass: 0.5,
                 }}
                 className="w-[350px] hidden xl:flex"
               >
@@ -339,7 +360,9 @@ export default function Home() {
             className="fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl p-4 border border-nirvul-gray-100 z-50"
           >
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${actionInfo.color} flex items-center justify-center text-white`}>
+              <div
+                className={`w-10 h-10 rounded-xl bg-gradient-to-r ${actionInfo.color} flex items-center justify-center text-white`}
+              >
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -355,7 +378,11 @@ export default function Home() {
                   <motion.div
                     className={`h-full bg-gradient-to-r ${actionInfo.color} rounded-full`}
                     animate={{ x: ["-100%", "100%"] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                   />
                 </div>
               </div>

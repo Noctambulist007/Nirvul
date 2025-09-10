@@ -42,7 +42,7 @@ const HistorySider = () => {
   const { getHistory } = useHistory();
   const { data: serverHistory } = getHistory(user?.id);
 
-  const { showHistorySider, setShowHistorySider } = useMenu();
+  const { showHistorySider, setShowHistorySider, setInputText, setOutputText, setDiffResult, setOriginalText, setReadOnly, setOutputTitle } = useMenu();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
@@ -134,7 +134,16 @@ const HistorySider = () => {
 
   const handleItemClick = (item: HistoryItem) => {
     console.log("Selected item:", item);
-    // Hook into editor/input if needed
+    setReadOnly(true);
+    setInputText(item.data.inputText);
+    setOriginalText(item.data.inputText);
+    setOutputText(item.data.outputText);
+    setDiffResult(item.data.diffResult);
+    setOutputTitle(item.data.type === "correct"
+            ? "বানান সংশোধন"
+            : item.data.type === "translate"
+            ? "অনুবাদ"
+            : "লেখা সারসংক্ষেপ",);
   };
 
   const mainDropdownItems = [

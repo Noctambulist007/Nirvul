@@ -31,7 +31,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
   setWritingStyle,
   hasInput,
 }) => {
-  const { activeKey } = useMenu();
+  const { activeKey, readOnly } = useMenu();
 
   const charCount = inputText.length;
   const wordCount =
@@ -138,6 +138,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             disabled={isLoading}
+            readOnly={readOnly}
             aria-label="Bengali text input"
             maxLength={10000}
             style={{

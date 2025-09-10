@@ -77,7 +77,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
   return (
     <div className="bg-white rounded-3xl shadow-xl shadow-nirvul-gray-200/20 border border-nirvul-gray-100 overflow-hidden h-full flex flex-col backdrop-blur-sm">
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-nirvul-primary-25 via-white to-nirvul-primary-25 p-6 border-b border-nirvul-gray-100">
+      <div className="bg-gradient-to-r from-nirvul-primary-50 via-white to-nirvul-primary-100 p-6 border-b border-nirvul-gray-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-nirvul-primary-500 to-nirvul-primary-600 flex items-center justify-center shadow-lg">
@@ -162,7 +162,7 @@ export const InputPanel: React.FC<InputPanelProps> = ({
         </div>
 
         {/* Bottom Controls */}
-        <div className="flex items-center justify-between mt-6 p-4 bg-gradient-to-r from-nirvul-gray-25 to-nirvul-primary-25 rounded-2xl border border-nirvul-gray-100">
+        <div className="flex items-center justify-between mt-6 p-4 bg-gradient-to-r from-nirvul-gray-25 to-nirvul-primary-50 rounded-2xl border border-nirvul-gray-100">
           {/* Action Button */}
           <div className="flex gap-3">
             {actionButton && (

@@ -12,6 +12,8 @@ import {
   Badge,
   Tooltip,
   Layout,
+  Modal,
+  Spin,
 } from "antd";
 import {
   CloseCircleOutlined,
@@ -39,10 +41,19 @@ interface HistoryItem {
 
 const HistorySider = () => {
   const { data: user } = useUser();
-  const { getHistory } = useHistory();
-  const { data: serverHistory } = getHistory(user?.id);
+  const { getHistory, deleteHistory } = useHistory();
+  const { data: serverHistory, isLoading } = getHistory(user?.id);
 
-  const { showHistorySider, setShowHistorySider, setInputText, setOutputText, setDiffResult, setOriginalText, setReadOnly, setOutputTitle } = useMenu();
+  const {
+    showHistorySider,
+    setShowHistorySider,
+    setInputText,
+    setOutputText,
+    setDiffResult,
+    setOriginalText,
+    setReadOnly,
+    setOutputTitle,
+  } = useMenu();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
@@ -125,11 +136,28 @@ const HistorySider = () => {
 
   // Delete handlers
   const handleDeleteItem = (id: string) => {
-    setHistoryItems((items) => items.filter((i) => i.id !== id));
+    Modal.confirm({
+      title: "আপনি কি নিশ্চিত?",
+      okType: "danger",
+      okText: "মুছে ফেলুন",
+      cancelText: "বাতিল করুন",
+      onOk: async () => {
+        deleteHistory(id, user?.id);
+      },
+    });
   };
 
   const handleClearAll = () => {
-    setHistoryItems([]);
+    Modal.confirm({
+      title: "সব ইতিহাস মুছে ফেলুন?",
+      content: "এটি সমস্ত ইতিহাস স্থায়ীভাবে মুছে ফেলবে।",
+      okType: "danger",
+      okText: "সব মুছে ফেলুন",
+      cancelText: "বাতিল করুন",
+      onOk: () => {
+        deleteHistory(null, user?.id, true);
+      },
+    });
   };
 
   const handleItemClick = (item: HistoryItem) => {
@@ -139,11 +167,13 @@ const HistorySider = () => {
     setOriginalText(item.data.inputText);
     setOutputText(item.data.outputText);
     setDiffResult(item.data.diffResult);
-    setOutputTitle(item.data.type === "correct"
-            ? "বানান সংশোধন"
-            : item.data.type === "translate"
-            ? "অনুবাদ"
-            : "লেখা সারসংক্ষেপ",);
+    setOutputTitle(
+      item.data.type === "correct"
+        ? "বানান সংশোধন"
+        : item.data.type === "translate"
+        ? "অনুবাদ"
+        : "লেখা সারসংক্ষেপ"
+    );
   };
 
   const mainDropdownItems = [
@@ -246,9 +276,15 @@ const HistorySider = () => {
         />
       </div>
 
+      
+
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-3">
-        {filteredHistory.length > 0 ? (
+        {isLoading ? (
+          <div className="h-full flex items-center justify-center">
+            <Spin size="default" />
+          </div>
+        ) : filteredHistory.length > 0 ? (
           <div className="space-y-3">
             {filteredHistory.map((item) => {
               const typeInfo = getTypeInfo(item.type);

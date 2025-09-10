@@ -40,8 +40,25 @@ export const useHistory = () => {
     }
   };
 
+  const deleteHistory = async (id: string | null, userId: string, isAll = false) => {
+    const supabase = await createClient();
+    const query = supabase.from("history").delete();
+    if (isAll) {
+      query.eq("user_id", userId);
+    } else {
+      query.eq("id", id).eq("user_id", userId).single();
+    }
+    const { error } = await query;
+    if (!error) {
+      await queryClient.refetchQueries({ queryKey: ["history", userId] });
+    } else {
+      console.error(error.message);
+    }
+  };
+
   return {
     getHistory,
     createHistory,
+    deleteHistory,
   };
 };

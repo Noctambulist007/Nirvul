@@ -5,7 +5,7 @@ export const useHistory = () => {
   const queryClient = useQueryClient();
 
   const getHistory = (userId: string) => {
-    const fetchHistory = async () => {
+    const fetchHistory = async (userId: string) => {
       const supabase = await createClient();
       const { data } = await supabase
         .from("history")
@@ -14,12 +14,11 @@ export const useHistory = () => {
         .order("created_at", { ascending: false });
       return data;
     };
+
     return useQuery({
-      queryKey: ["history"],
-      queryFn: async () => {
-        const history = await fetchHistory();
-        return history;
-      },
+      queryKey: ["history", userId],
+      queryFn: () => fetchHistory(userId),
+      enabled: !!userId,
     });
   };
 
@@ -35,7 +34,7 @@ export const useHistory = () => {
       ])
       .single();
     if (!error) {
-      queryClient.invalidateQueries({ queryKey: ["history"] });
+      await queryClient.refetchQueries({ queryKey: ["history", userId] });
     } else {
       console.error(error.message);
     }

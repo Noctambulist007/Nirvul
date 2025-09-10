@@ -15,6 +15,7 @@ import { diffWords } from "@/utils/diff";
 import { Sparkles, BookOpen, Languages } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { useHistory } from "@/hooks/useHistory";
+import { useMenu } from "@/contexts/MenuContext";
 
 export type WritingStyle = "standard" | "formal" | "creative";
 export type LoadingAction = "correct" | "translate" | "summarize" | null;
@@ -23,7 +24,7 @@ export type HighlightedCorrection = { start: number; end: number } | null;
 export default function Home() {
   const { data: user } = useUser();
   const { createHistory } = useHistory();
-  const [inputText, setInputText] = useState<string>("");
+  const { inputText, setInputText } = useMenu();
   const [originalText, setOriginalText] = useState<string | null>(null);
   const [outputText, setOutputText] = useState<string>("");
   const [diffResult, setDiffResult] = useState<DiffResult[] | null>(null);

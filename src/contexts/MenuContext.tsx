@@ -6,6 +6,8 @@ interface MenuContextType {
   setActiveKey: (key: string) => void;
   showHistorySider: boolean;
   setShowHistorySider: (show: boolean) => void;
+  inputText: string;
+  setInputText: (text: string) => void;
 }
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
@@ -13,8 +15,9 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [activeKey, setActiveKey] = useState('correct');
   const [showHistorySider, setShowHistorySider] = useState(false);
+  const [inputText, setInputText] = useState<string>("");
 
-  const value = { activeKey, setActiveKey, showHistorySider, setShowHistorySider };
+  const value = { activeKey, setActiveKey, showHistorySider, setShowHistorySider, inputText, setInputText };
 
   return (
     <MenuContext.Provider value={value}>

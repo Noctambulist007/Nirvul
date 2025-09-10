@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  History,
-  Clock,
-  MoreVertical
-} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { History, Clock, MoreVertical } from "lucide-react";
 import {
   Button,
   Input,
@@ -17,7 +13,12 @@ import {
   Tooltip,
   Layout,
 } from "antd";
-import { CloseCircleOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CloseCircleOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+
 import { useMenu } from "@/contexts/MenuContext";
 import { useHistory } from "@/hooks/useHistory";
 import { useUser } from "@/hooks/useUser";
@@ -25,43 +26,55 @@ import { useUser } from "@/hooks/useUser";
 const { Sider } = Layout;
 const { Text, Title } = Typography;
 
+type HistoryType = "correct" | "translate" | "summarize";
+
 interface HistoryItem {
   id: string;
   title: string;
   content: string;
+  data: any;
   timestamp: Date;
-  type: "correction" | "translation" | "writing";
+  type: HistoryType;
 }
 
-const HistorySider = ({userId} : {userId: string}) => {
-  const {getHistory} = useHistory();
-  const {data, isLoading} = getHistory(userId);
-  const history = data?.map((item) => ({
-      id: item.id,
-      title: item.data.type === 'correct' ? 'বানান সংশোধন' : item.data.type === 'translate' ? 'অনুবাদ' : 'লেখা সারসংক্ষেপ',
-      content: item.data.inputText,
-      timestamp: new Date(item.created_at),
-      type: item.data.type,
-    })) || []
-
+const HistorySider = () => {
+  const { data: user } = useUser();
+  const { getHistory } = useHistory();
+  const { data: serverHistory } = getHistory(user?.id);
 
   const { showHistorySider, setShowHistorySider } = useMenu();
-  
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [historyItems, setHistoryItems] = useState<HistoryItem[]>(history
-);
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
 
+  // Sync server history -> local state
+  useEffect(() => {
+    if (serverHistory && Array.isArray(serverHistory)) {
+      const mapped = serverHistory.map((item: any) => ({
+        id: item.id,
+        title:
+          item.data.type === "correct"
+            ? "বানান সংশোধন"
+            : item.data.type === "translate"
+            ? "অনুবাদ"
+            : "লেখা সারসংক্ষেপ",
+        content: item.data.inputText || "",
+        data: item.data,
+        timestamp: new Date(item.created_at),
+        type: item.data.type as HistoryType,
+      }));
+      setHistoryItems(mapped);
+    }
+  }, [serverHistory]);
 
-useEffect(() => {
-  setHistoryItems(history);
-}, [history]);
-
-  // Filter history
-  const filteredHistory = historyItems.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtered history
+  const filteredHistory = useMemo(() => {
+    return historyItems.filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.content.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, historyItems]);
 
   // Format timestamp
   const formatTimestamp = (timestamp: Date) => {
@@ -77,7 +90,7 @@ useEffect(() => {
     return `${Math.floor(diffInMinutes / (24 * 60))} দিন আগে`;
   };
 
-  const getTypeInfo = (type: string) => {
+  const getTypeInfo = (type: HistoryType) => {
     switch (type) {
       case "correct":
         return {
@@ -97,6 +110,7 @@ useEffect(() => {
           label: "অনুবাদ",
           badgeColor: "#2065a2",
         };
+      case "summarize":
       default:
         return {
           icon: "📝",
@@ -120,6 +134,7 @@ useEffect(() => {
 
   const handleItemClick = (item: HistoryItem) => {
     console.log("Selected item:", item);
+    // Hook into editor/input if needed
   };
 
   const mainDropdownItems = [
@@ -136,17 +151,21 @@ useEffect(() => {
     },
   ];
 
-  const stats = {
-    total: historyItems.length,
-    corrections: historyItems.filter((i) => i.type === "correction").length,
-    translations: historyItems.filter((i) => i.type === "translation").length,
-    writings: historyItems.filter((i) => i.type === "writing").length,
-  };
+  const stats = useMemo(() => {
+    return {
+      total: historyItems.length,
+      corrections: historyItems.filter((i) => i.type === "correct").length,
+      translations: historyItems.filter((i) => i.type === "translate").length,
+      summaries: historyItems.filter((i) => i.type === "summarize").length,
+    };
+  }, [historyItems]);
 
   return (
     <Sider
       hidden={!showHistorySider}
-      onCollapse={(val) => setShowHistorySider(val)}
+      collapsible
+      collapsedWidth={0}
+      trigger={null}
       width={380}
       theme="light"
       className="shadow-md h-screen overflow-y-auto"
@@ -158,34 +177,30 @@ useEffect(() => {
             <div className="p-1 bg-white/20 rounded-lg border border-white/30">
               <History size={18} className="text-white" />
             </div>
-            <div>
-              <Title level={5} className="!text-white !mb-0 !text-2xl">
-                আপনার লেখার যাত্রা
-              </Title>
-            </div>
+            <Title level={5} className="!text-white !mb-0 !text-2xl">
+              আপনার লেখার যাত্রা
+            </Title>
           </div>
-          {
-            <div className="flex items-center gap-2">
-              <Dropdown
-                menu={{ items: mainDropdownItems }}
-                placement="bottomRight"
-              >
-                <Button
-                  type="text"
-                  size="small"
-                  icon={<MoreVertical size={18} />}
-                  className="!text-white hover:bg-white/20 border-none"
-                />
-              </Dropdown>
+          <div className="flex items-center gap-2">
+            <Dropdown
+              menu={{ items: mainDropdownItems }}
+              placement="bottomRight"
+            >
               <Button
                 type="text"
                 size="small"
-                icon={<CloseCircleOutlined />}
-                onClick={() => setShowHistorySider(!showHistorySider)}
+                icon={<MoreVertical size={18} />}
                 className="!text-white hover:bg-white/20 border-none"
               />
-            </div>
-          }
+            </Dropdown>
+            <Button
+              type="text"
+              size="small"
+              icon={<CloseCircleOutlined />}
+              onClick={() => setShowHistorySider(false)}
+              className="!text-white hover:bg-white/20 border-none"
+            />
+          </div>
         </div>
 
         {/* Stats */}
@@ -202,7 +217,7 @@ useEffect(() => {
               </span>
               <span className="flex items-center gap-1 text-nirvul-primary-100">
                 <span className="w-2 h-2 bg-purple-300 rounded-full"></span>
-                {stats.writings} লেখা
+                {stats.summaries} সারসংক্ষেপ
               </span>
             </div>
           </div>
@@ -210,19 +225,17 @@ useEffect(() => {
       </div>
 
       {/* Search */}
-      {
-        <div className="p-3 bg-white border-b border-nirvul-gray-200">
-          <Input
-            placeholder="Search your history..."
-            prefix={<SearchOutlined className="text-nirvul-gray-400" />}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            allowClear
-            size="middle"
-            className="rounded-md"
-          />
-        </div>
-      }
+      <div className="p-3 bg-white border-b border-nirvul-gray-200">
+        <Input
+          placeholder="Search your history..."
+          prefix={<SearchOutlined className="text-nirvul-gray-400" />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          allowClear
+          size="middle"
+          className="rounded-md"
+        />
+      </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-3">
@@ -259,7 +272,6 @@ useEffect(() => {
                           <Badge
                             text={typeInfo.label}
                             color={typeInfo.badgeColor}
-                            className="text-xs"
                           />
                         </div>
                         <Text

@@ -9,12 +9,10 @@ import { CheckCircle, FileText, History, Languages, Sparkles } from "lucide-reac
 import { MenuProvider, useMenu } from "@/contexts/MenuContext";
 import Link from "next/link";
 import HistorySider from "@/components/HistorySidebar";
-import { useUser } from "@/hooks/useUser";
 
 const { Sider, Content } = Layout;
 
 const MainContent = ({ children }: React.PropsWithChildren) => {
-  const { data: user, isLoading } = useUser();
   const { activeKey, setActiveKey, setShowHistorySider } = useMenu();
 
   const handleMenuClick = ({ key }: { key: string }) => {
@@ -52,14 +50,6 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
       description: "আপনার লেখার যাত্রা",
     },
   ];
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spin size="large" />
-      </div>
-    );
-  }
 
   return (
     <Layout className="min-h-screen bg-gradient-to-br from-nirvul-gray-25 via-white to-nirvul-primary-25">
@@ -181,7 +171,10 @@ const MainContent = ({ children }: React.PropsWithChildren) => {
         </div>
       </Sider>
 
-      <HistorySider userId={user?.id} />
+      {
+        activeKey === 'history' && <HistorySider />
+      }
+
 
       <Layout className="bg-transparent relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-nirvul-primary-25/30 via-transparent to-nirvul-gray-50/50 pointer-events-none"></div>
